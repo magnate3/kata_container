@@ -1,0 +1,36 @@
+docker pull mirrorgcrio/pause-arm64:3.2
+docker pull mirrorgcrio/kube-proxy-arm64:v1.18.1
+docker pull mirrorgcrio/kube-controller-manager-arm64:v1.18.1
+docker pull mirrorgcrio/kube-apiserver-arm64:v1.18.1
+docker pull mirrorgcrio/kube-scheduler-arm64:v1.18.1
+docker pull mirrorgcrio/etcd-arm64:3.4.3-0
+docker pull coredns/coredns:coredns-arm64
+
+
+docker tag mirrorgcrio/kube-apiserver-arm64:v1.18.1 k8s.gcr.io/kube-apiserver:v1.18.1
+docker tag mirrorgcrio/kube-scheduler-arm64:v1.18.1 k8s.gcr.io/kube-scheduler:v1.18.1
+docker tag mirrorgcrio/kube-controller-manager-arm64:v1.18.1 k8s.gcr.io/kube-controller-manager:v1.18.1
+docker tag mirrorgcrio/kube-proxy-arm64:v1.18.1 k8s.gcr.io/kube-proxy:v1.18.1
+docker tag mirrorgcrio/pause-arm64:3.2 k8s.gcr.io/pause:3.2
+docker tag mirrorgcrio/etcd-arm64:3.4.3-0 k8s.gcr.io/etcd:3.4.3-0
+docker tag coredns/coredns:coredns-arm64 k8s.gcr.io/coredns:1.6.7
+
+apt-get install kubeadm=1.18.1-00 kubectl=1.18.1-00 kubelet=1.18.1-00
+kubeadm init --kubernetes-version=v1.18.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=14.14.18.6
+
+------------------------------------------------------------------------
+flannel镜像：
+docker pull registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-amd64
+docker pull registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-arm64
+docker pull registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-arm
+docker pull registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-ppc64le
+docker pull registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-s390x
+
+
+docker tag registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-amd64 quay.io/coreos/flannel:v0.12.0-amd64
+docker tag registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-arm64 quay.io/coreos/flannel:v0.12.0-arm64
+docker tag registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-arm quay.io/coreos/flannel:v0.12.0-arm
+docker tag registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-ppc64le quay.io/coreos/flannel:v0.12.0-ppc64le
+docker tag registry.cn-shanghai.aliyuncs.com/yijindami/flannel:v0.12.0-s390x quay.io/coreos/flannel:v0.12.0-s390x
+
+kubectl create -f kube-flannel.yml
