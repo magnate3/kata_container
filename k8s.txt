@@ -1,0 +1,100 @@
+ 镜像
+ kubeadm config images list
+ kubeadm config images list --kubernetes-version=v1.18.1
+ docker rmi  mirrorgcrio/pause:3.1
+ ************ containerd
+ /etc/containerd/config.toml.
+before 
+disabled_plugins = ["cri"]
+after 
+disabled_plugins = [""]
+ # 配置 containerd
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+ ctr namespace list
+ ctr --namespace k8s.io container list
+  ctr plugins list 
+ ctr iamge
+ ctr image ls
+ ctr --debug image pull docker.io/library/alpine:latest
+ ctr snapshot tree
+ ctr snapshot ls
+ ctr images layerinfo --platform linux/amd64 docker.io/library/bash:latest
+ linux/arm64/v8
+ ctr image pull  registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.1  --all-platforms
+ ctr image import  --no-unpack apiserver-1.18.1.tar
+ ctr image rm $(ctr image ls -q)
+ https://zhuanlan.zhihu.com/p/109256949
+ kata: https://www.codenong.com/cs106755777/
+ crio 和cr container
+ https://github.com/kata-containers/documentation/blob/master/how-to/run-kata-with-k8s.md
+  containerd
+  https://sealyun.com/post/containerd/
+  apt-get install -y containerd.io
+  ctr images pull docker.io/library/nginx:alpine
+  ctr -a /run/containerd/containerd.sock images ls
+  ctr run --runtime io.containerd.run.kata.v2 -t --rm docker.io/library/busybox:latest hello sh
+  k3s ctr c ls | grep hello
+ ***************crictl
+  crictl images list
+ ****************K8s 配置使用Kata
+K8s 使用 Kata 有两种方式： 
+- 使用 K8s untrusted_workload_runtime
+ - 使用 K8s 的 RuntimeClass，这个在 1.12 版本作为alpha特性使用
+ mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+ 
+ /etc/containerd/config.toml
+ 
+ # Start cluster using kubeadm
+ ctr --namespace=k8s.gcr.io images ls
+$ sudo kubeadm init --skip-preflight-checks \
+--cri-socket /run/containerd/containerd.sock --pod-network-cidr=10.244.0.0/16
+kubeadm init --cri-socket /run/containerd/containerd.sock --ignore-preflight-errors=all
+kubeadm init --kubernetes-version=v1.18.1  --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=10.10.16.82 --ignore-preflight-errors=all --cri-socket /run/containerd/containerd.sock
+ kubectl get nodes
+ kubectl get pods --all-namespaces
+ 
+ oracle
+ https://docs.oracle.com/en/operating-systems/olcne/runtimes/kata-pod-create.html
+  kubectl taint nodes --all node-role.kubernetes.io/master-
+  kubectl apply -f kube-flannel.yml
+root@ubuntu:~# kubectl apply -f kata-nginx.yaml 
+pod/kata-nginx created
+kubectl get runtimeclass
+kubectl describe pod kata-nginx
+kata-runtime list
+kubectl get runtimeclass
+kubectl delete pod kata-nginx
+kubectl get pods
+kubectl exec -it kata-nginx sh
+kubectl get pod -A
+**********************docker
+apt -y install docker-ce docker-ce-cli containerd.io
+镜像docker pull mirrorgcrio/pause:3.1
+docker tag mirrorgcrio/pause:3.1  k8s.gcr.io/pause:3.1
+docker tag mirrorgcrio/pause:3.1  k8s.gcr.io/pause:3.1
+docker save -o  pause:3.1.tar   k8s.gcr.io/pause:3.1
+ctr image import --no-unpack pause:3.1.tar
+ctr image import   pause:3.1.tar  --all-platforms
+
+iptables -t nat -A PREROUTING -d  108.177.125.82   -p tcp -m tcp   -j DNAT --to-destination 14.215.57.225
+
+
+*************crictl
+crictl  images list
+crictl --runtime-endpoint /run/containerd/containerd.sock ps -a | grep kube | grep -v pause
+crictl --runtime-endpoint /run/containerd/containerd.sock logs CONTAINERID
+Run crictl info and check RuntimeReady is true
+Add --cgroup-driver=systemd to the kubelet start command (For example, in /etc/systemd/system/kubelet.service.d/10-kubeadm.conf)
+crictl -r unix:///run/containerd/containerd.sock pull k8s.gcr.io/kube-apiserver:v1.18.1
+
+ # cat /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 30
+debug: false
+
+
+*************** kata
+kata-runtime list

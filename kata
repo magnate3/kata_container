@@ -1,0 +1,66 @@
+disable_image_nvdimm = true
+Runtime default config files
+/etc/kata-containers/configuration.toml
+/usr/share/defaults/kata-containers/configuration.toml
+
+path = "/usr/share/kata-containers/binary/qemu-system-aarch64"
+kernel = "/usr/share/kata-containers/binary/vmlinuz-5.4.34-88"
+image = "/usr/share/kata-containers/binary/kata-containers.img"
+ 安装
+ /opt/gopath/src/github.com/kata-containers/tests/.ci
+machine_type = "virt"
+配置文件
+/etc/systemd/system/docker.service.d/kata-containers.conf
+/etc/systemd/system/docker.service.d/kata-containers.conf
+配置学习
+https://github.com/kata-containers/documentation/blob/master/Developer-Guide.md
+
+apt-get install debootstrap
+
+
+镜像
+ls /usr/share/kata-containers/
+
+
+run
+docker run --rm -it --runtime kata-runtime ubuntu   <good>
+docker run --rm -it --runtime kata-runtime nginx
+docker run -tid  --runtime kata-runtime nginx
+docker run -tid  --runtime kata-runtime busybox
+docker run --rm -it alpine sh
+# verify most basic nemu container works:
+docker run --runtime=kata-nemu -it alpine sh -c date
+
+# try with specific memory request, which will result in a QMP hotplug for adding memory:
+docker run --runtime=kata-nemu -m 1024M -it alpine sh -c date
+
+ apt install python -y
+apt-get -y install zlib*
+apt-get  install  libglib2.0-dev
+apt-cache search pixman
+apt-get -y install libpixman-1-dev
+apt-get install libfdt-dev -y
+apt-cache search libattr
+ apt-get install -y ibattr1-dev
+mkdir build
+  cd build
+  ../configure
+  
+  ../configure --disable-libssh2 --disable-tcmalloc --disable-glusterfs --disable-seccomp --disable-{bzip2,snappy,lzo} --disable-usb-redir --disable-libusb --disable-libnfs --disable-tcg-interpreter --disable-debug-tcg --disable-libiscsi --disable-rbd --disable-spice --disable-attr --disable-cap-ng --disable-linux-aio --disable-uuid --disable-brlapi --disable-vnc-{jpeg,png,sasl} --disable-rdma --disable-bluez   --disable-curl --disable-curses --disable-sdl --disable-gtk --disable-tpm --disable-vte --disable-vnc --disable-xen --disable-opengl --disable-slirp --target-list=aarch64-softmmu
+  
+  ../configure --disable-libssh2 --disable-tcmalloc --disable-glusterfs --disable-seccomp --disable-{bzip2,snappy,lzo} --disable-usb-redir --disable-libusb --disable-libnfs --disable-tcg-interpreter --disable-debug-tcg --disable-libiscsi --disable-rbd --disable-spice --disable-attr --disable-cap-ng --disable-linux-aio --disable-uuid --disable-brlapi --disable-vnc-{jpeg,png,sasl} --disable-rdma --disable-bluez   --disable-curl --disable-curses --disable-sdl --disable-gtk --disable-tpm --disable-vte --disable-vnc --disable-xen --disable-opengl --disable-slirp --target-list=aarch64-softmmu
+  
+  make
+  
+ qemu-lite/linux-user/strace.c
+ #include<sys/sysmacros.h>
+ 
+ docker run --rm -it --runtime kata-runtime busybox uname -r
+ 
+ docker run -ti -d  --runtime runc --name runc-container  busybox uname -r
+ 
+ 
+journalctl -r -t kata-proxy 
+journalctl -r -t kata-shim
+journalctl -r -t kata-shim
+
