@@ -1,0 +1,12 @@
+**** step1
+rustup target add aarch64-unknown-linux-musl
+yum -y install libfdt-devel.aarch64
+use container to make & install, docker runtime can not use kata-runtime
+ ./scripts/dev_cli.sh build
+ /data2/hyper/cloud-hypervisor/build/cargo_target/aarch64-unknown-linux-gnu/debug/cloud-hypervisor
+#virtiofsd --socket-path=/var/run/vm001-vhost-fs.sock -o source=/var/lib/fs/vm001
+ ./virtiofsd -o vhost_user_socket=/run/vc/vm/sh/virtiofsd.sock  -o source=/var/lib/fs/vm001
+ mkdir -p  /usr/libexec/kata-qemu
+
+ ****************test
+ cloud-hypervisor -h
