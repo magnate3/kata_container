@@ -1,3 +1,6 @@
+kata-runtime kill mycontainer
+kata-runtime delete mycontainer
+time kata-runtime run -b . 851428da-ffd3-11e8-9cf1-0aecc8e7ab67
 disable_image_nvdimm = true
 Runtime default config files
 /etc/kata-containers/configuration.toml
