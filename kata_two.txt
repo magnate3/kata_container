@@ -1,0 +1,5 @@
+kubectl get pod two-containers --output=yaml
+kubectl describe pod two-containers
+kubectl exec -it two-containers -c nginx-container -- /bin/bash
+POD_ID="$(sudo crictl pods --name test-pod -q)"
+crictl inspectp -o=json $POD_ID | grep cgroupsPath
