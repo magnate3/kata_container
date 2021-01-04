@@ -1,0 +1,1 @@
+cloud-hypervisor --kernel /usr/share/kata-containers/vmlinux-virtiofs.container --disk path=/usr/share/kata-containers/kata-containers.img --cmdline "init=/bin/bash keep_bootcon console=hvc0 reboot=k panic=1 pci=off root=/dev/vda rw" --cpus boot=4 --memory size=512M --serial file=serial.log   --seccomp false
